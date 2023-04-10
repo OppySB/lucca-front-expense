@@ -1,6 +1,7 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {UpdateComponent} from './update.component';
 import {TranslateModule} from '@ngx-translate/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('UpdateComponent', () => {
     let component: UpdateComponent;
@@ -11,7 +12,8 @@ describe('UpdateComponent', () => {
                 declarations: [UpdateComponent],
                 imports: [
                     TranslateModule.forRoot()
-                ]
+                ],
+                schemas: [NO_ERRORS_SCHEMA]
             }
         )
             .compileComponents();

@@ -144,30 +144,13 @@
                 "test": {
                     "builder": "@angular-devkit/build-angular:karma",
                     "options": {
-                        "main": "projects/expense-app/src/test.ts",
-                        "polyfills": "projects/expense-app/src/polyfills.ts",
+                        "polyfills": [
+                          "zone.js",
+                          "zone.js/testing"
+                        ],
                         "tsConfig": "projects/expense-app/tsconfig.spec.json",
-                        "karmaConfig": "projects/expense-app/karma.conf.js",
-                        "codeCoverage": true,
-                        "assets": [
-                            "projects/expense-app/src/favicon.ico",
-                            "projects/expense-app/src/assets",
-                            {
-                                "glob": "**/*",
-                                "input": "dist/expense-lib/assets",
-                                "output": "/assets/expense-lib"
-                            }
-                        ],
-                        "styles": [
-                            "projects/expense-app/src/styles.scss"
-                        ],
-                        "stylePreprocessorOptions": {
-                            "includePaths": [
-                                "projects/expense-lib/src/lib/styles"
-                            ]
-                        },
-                        "scripts": []
-                    }
+                        "karmaConfig": "projects/expense-app/karma.conf.js"
+                      }
                 },
                 "lint": {
                     "builder": "@angular-eslint/builder:lint",

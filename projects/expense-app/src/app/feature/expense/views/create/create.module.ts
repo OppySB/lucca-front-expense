@@ -3,13 +3,10 @@ import { CommonModule } from '@angular/common';
 import { CreateRoutingModule } from './create-routing.module';
 import { CreateComponent } from './create.component';
 import { TranslateModule } from '@ngx-translate/core';
-import {ExpenseCreateModule} from "../../../../../../../expense-lib/src/lib/expense-create/expense-create.module";
-
+import { ExpenseCreateModule } from '../../../../../../../expense-lib/src/lib/expense-create/expense-create.module';
 
 @NgModule({
-    declarations: [
-        CreateComponent
-    ],
+    declarations: [CreateComponent],
     imports: [
         CommonModule,
         CreateRoutingModule,
@@ -17,4 +14,4 @@ import {ExpenseCreateModule} from "../../../../../../../expense-lib/src/lib/expe
         ExpenseCreateModule
     ]
 })
-export class CreateModule { }
+export class CreateModule {}

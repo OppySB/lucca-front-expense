@@ -1,1 +1,63 @@
-<p>expense-home works!</p>
+<h1>Liste des dépenses</h1>
+            <p-button 
+                label="Créer" 
+                icon="pi pi-plus" 
+                styleClass="p-button-primary"
+                (click)="gotToCreate()"></p-button>
+<p-table [value]="expenses" 
+        [paginator]="true"
+        [rows]="10"
+        [showCurrentPageReport]="true"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        currentPageReportTemplate="{first}-{last}/{totalRecords}"
+        >
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Id</th>
+            <th>Nature</th>
+            <th>Montant</th>
+            <th>Commentaire</th>
+            <th>Date</th>
+            <th>Distance</th>
+            <th>Invités</th>
+            <th>Actions</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-expense>
+        <tr>
+            <td>{{ expense.id }}</td>
+            <td>
+                <p-tag 
+                    [value]="expense.nature" 
+                    [severity]="getNatureTagColor(expense.nature)"
+                    >
+                </p-tag>
+            </td>
+            <td>{{ expense.amount }}</td>
+            <td>{{ expense.comment }}</td>
+            <td>{{ expense.purchasedOn }}</td>
+            <td>
+                <p-tag *ngIf="expense.distance"
+                [value]="expense.distance" 
+                [severity]="getNatureTagColor(expense.nature)"
+                >
+                </p-tag>
+            </td>
+            <td>
+                <p-tag *ngIf="expense.invites"
+                [value]="expense.invites" 
+                [severity]="getNatureTagColor(expense.nature)"
+                >
+                </p-tag>
+            </td>
+            <td>
+            <p-button icon="pi pi-pencil"
+             (click)="gotToUpdate(expense.id)"
+             styleClass="p-button-secondary"
+             tooltipPosition="top"
+      pTooltip=" modifier une depense to copy the code"
+            ></p-button>   
+            </td>
+        </tr>
+    </ng-template>
+</p-table>

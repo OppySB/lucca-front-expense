@@ -7,9 +7,7 @@ import { ExpenseHomeModule } from "@lucca/expense/src/lib/expense-home";
 
 
 @NgModule({
-    declarations: [
-        HomeComponent
-    ],
+    declarations: [HomeComponent],
     imports: [
         CommonModule,
         HomeRoutingModule,
@@ -17,4 +15,4 @@ import { ExpenseHomeModule } from "@lucca/expense/src/lib/expense-home";
         ExpenseHomeModule
     ]
 })
-export class HomeModule { }
+export class HomeModule {}

@@ -6,7 +6,7 @@ export interface Expense {
     /**
      * Identifiant de la dépense
      */
-    id?: string;
+    id?: number;
 
     /**
      * Nature de la dépense
