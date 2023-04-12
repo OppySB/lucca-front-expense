@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ExpenseApiService, Expense } from '@lucca/expense/src/lib/common';
+import { ExpenseApiService, Expense, SaveExpenseEventEmitterService } from '@lucca/expense/src/lib/common';
 
 @Component({
     selector: 'lucca-expense-home',
@@ -10,22 +10,35 @@ import { ExpenseApiService, Expense } from '@lucca/expense/src/lib/common';
 export class ExpenseHomeComponent implements OnInit {
 
     public expenses: Expense[] = [];
-    
+    public sidebarVisible1: boolean;
+
     public constructor(
         private readonly expenseApiService: ExpenseApiService,
+        private readonly saveExpenseEventEmitterService: SaveExpenseEventEmitterService,
         private readonly router: Router
-    ) {
-        
-    }
+    ) {}
 
     public ngOnInit(): void {
-        // Chargement des déspenses de la grille
+        // Chargement des dépenses de la grille
+        this.loadExpense();
+
+        this.saveExpenseEventEmitterService.subOnSaveExpense =
+            this.saveExpenseEventEmitterService.invokeOnSaveExpense.subscribe(
+                () => {
+                    this.loadExpense();
+                }
+            );
+    }
+
+    /**
+     * Chargement des dépenses de la grille
+     */
+    public loadExpense(): void {
         this.expenseApiService
             .getExpenses()
-            .subscribe(
-                (expenses: Expense[]) => {
-                    this.expenses = expenses
-                });
+            .subscribe((expenses: Expense[]) => {
+                this.expenses = expenses;
+            });
     }
 
     /**
@@ -42,7 +55,6 @@ export class ExpenseHomeComponent implements OnInit {
     public gotToCreate(): void {
         this.router.navigateByUrl('/create');
     }
-
 
     /**
      * Récupère la couleur à afficher dans la grille

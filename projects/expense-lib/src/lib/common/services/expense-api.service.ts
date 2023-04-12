@@ -11,9 +11,7 @@ export class ExpenseApiService {
     // TODO déplacer l'uri en conf
     private readonly url = 'http://localhost:3000/expenses';
 
-    public constructor(public readonly http: HttpClient) { 
-
-    }
+    public constructor(public readonly http: HttpClient) {}
 
     /**
      * Récupère la liste des dépenses
@@ -21,10 +19,17 @@ export class ExpenseApiService {
      */
     public getExpenses(): Observable<Expense[]> {
         return this.http
-            .get<{items: Expense[]}>(this.url)
-            .pipe(
-                map(response => response.items || [])
-            );
+            .get<{ items: Expense[] }>(this.url)
+            .pipe(map((response) => response.items || []));
+    }
+
+    /**
+     * Récupère la liste des dépenses
+     * @returns la liste des dépenses
+     */
+    public save(expense: Expense): Observable<Expense> {
+        return this.http
+            .post(this.url, expense);
     }
 
 }

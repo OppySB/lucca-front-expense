@@ -1,15 +1,27 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ExpenseHomeComponent } from "./expense-home.component";
+import { ExpenseHomeComponent } from './expense-home.component';
 import { TableModule } from 'primeng/table';
 import { MatButtonModule } from '@angular/material/button';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
 import { TooltipModule } from 'primeng/tooltip';
-
+import { SidebarModule } from 'primeng/sidebar';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { CalendarModule } from 'primeng/calendar';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CardModule } from 'primeng/card';
+import { DropdownModule } from 'primeng/dropdown';
+import { MessagesModule } from 'primeng/messages';
+import { KeyFilterModule } from 'primeng/keyfilter';
+import { ExpenseCreateComponent } from './expense-create/expense-create.component';
+import { ExpenseUpdateComponent } from './expense-update/expense-update.component';
 @NgModule({
     declarations: [
-        ExpenseHomeComponent
+        ExpenseHomeComponent,
+        ExpenseCreateComponent,
+        ExpenseUpdateComponent
     ],
     imports: [
         CommonModule,
@@ -17,11 +29,20 @@ import { TooltipModule } from 'primeng/tooltip';
         MatButtonModule,
         ButtonModule,
         TagModule,
-        TooltipModule
+        TooltipModule,
+        SidebarModule,
+        InputTextModule,
+        InputTextareaModule,
+        CalendarModule,
+        FormsModule, 
+        ReactiveFormsModule,
+        CardModule,
+        DropdownModule,
+        MessagesModule,
+        InputTextModule,
+        KeyFilterModule
     ],
     providers: [],
     exports: [ExpenseHomeComponent]
 })
-export class ExpenseHomeModule {
-
-}
+export class ExpenseHomeModule {}

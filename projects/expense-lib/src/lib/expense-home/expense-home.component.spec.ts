@@ -1,3 +1,4 @@
+import { SaveExpenseEventEmitterService } from './../common/events/save-expense-event-emitter.service';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ExpenseHomeComponent } from './expense-home.component';
@@ -13,6 +14,7 @@ describe('ExpenseHomeComponent', () => {
     let fixture: ComponentFixture<ExpenseHomeComponent>;
     let router: Router;
     let expenseApiService: ExpenseApiService;
+    let saveExpenseEventEmitterService: SaveExpenseEventEmitterService;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
@@ -26,6 +28,7 @@ describe('ExpenseHomeComponent', () => {
         fixture = TestBed.createComponent(ExpenseHomeComponent);
         router = TestBed.inject(Router);
         expenseApiService = TestBed.inject(ExpenseApiService);
+        saveExpenseEventEmitterService = TestBed.inject(SaveExpenseEventEmitterService);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });
@@ -57,13 +60,25 @@ describe('ExpenseHomeComponent', () => {
         expect(router.navigateByUrl).toHaveBeenCalledWith('/update/1');
     });
 
-    it('ngOnInit', () => {
-        const expenses: Expense[] = [
-            { id: 1 } as Expense,
-            { id: 2 } as Expense,
-        ];
-        spyOn(expenseApiService, 'getExpenses').and.returnValue(of(expenses));
-        component.ngOnInit();
-        expect(component.expenses).toEqual(expenses);
+    describe('ngOnInit', () => {
+        it('ngOnInit', () => {
+            const expenses: Expense[] = [
+                { id: 1 } as Expense,
+                { id: 2 } as Expense,
+            ];
+            spyOn(expenseApiService, 'getExpenses').and.returnValue(of(expenses));
+            component.ngOnInit();
+            expect(component.expenses).toEqual(expenses);
+        });
+        it('ngOnInit subscirbe to save emitter', () => {
+
+            spyOn(expenseApiService, 'getExpenses').and.returnValue(of(null));
+            spyOn(component, 'loadExpense');
+            component.ngOnInit();
+
+            saveExpenseEventEmitterService.OnSaveExpense();
+            expect(component.loadExpense).toHaveBeenCalledTimes(3);
+        });
     });
+    
 });

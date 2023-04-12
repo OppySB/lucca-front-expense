@@ -6,6 +6,7 @@ import { HttpClient } from "@angular/common/http";
 import { AppTranslateLoader } from './core/translate-loader';
 import { TranslateICUParser } from 'ngx-translate-parser-plural-select';
 import { TranslateLoader, TranslateModule, TranslateParser } from '@ngx-translate/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 export function HttpLoaderFactory(http: HttpClient): AppTranslateLoader {
     return new AppTranslateLoader(http, [
@@ -19,8 +20,10 @@ export function HttpLoaderFactory(http: HttpClient): AppTranslateLoader {
         AppComponent
     ],
     imports: [
+    
         BrowserModule,
         AppRoutingModule,
+        BrowserAnimationsModule,
         TranslateModule.forRoot({
             loader: {
                 provide: TranslateLoader,

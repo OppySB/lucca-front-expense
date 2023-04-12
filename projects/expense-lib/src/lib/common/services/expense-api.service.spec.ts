@@ -37,7 +37,7 @@ describe('ExpenseApiService', () => {
             });
             expect(service.http.get).toHaveBeenCalled();
         });
-        it('getExpenses', () => {
+        it('getExpenses wrong tag', () => {
             const expenseApiResponse = {
                 test: [
                     { id: 1 } as Expense,
@@ -51,5 +51,14 @@ describe('ExpenseApiService', () => {
             });
             expect(service.http.get).toHaveBeenCalled();
         });
+    });
+
+    it('save', () => {
+        const expenseApiResponse = { id: 1 } as Expense;
+        spyOn(service.http, 'post').and.returnValue(of(expenseApiResponse));
+        service.save(expenseApiResponse).subscribe((data) => {
+            expect(data).toEqual(expenseApiResponse);
+        });
+        expect(service.http.post).toHaveBeenCalled();
     });
 });

@@ -1,0 +1,53 @@
+<p-messages></p-messages>
+<p-button label="Créer" icon="pi pi-plus" type="button" styleClass="p-button-primary"
+    (click)="onOpen()" pTooltip="Création de dépense" tooltipPosition="top" tooltipPosition="top">
+</p-button>
+
+
+<div class="card flex justify-content-center">
+ 
+   
+ 
+<p-sidebar styleClass="p-sidebar-md" [(visible)]="createPanelVisible" position="right"
+>
+
+    <ng-template pTemplate="header">
+        <h1>Creation d'une dépense</h1>
+    </ng-template>
+    <ng-template pTemplate="content">
+        <form [formGroup]="expenseForm" (ngSubmit)="save()">
+            <div>
+                <label for="nature">Type de dépense: </label>
+                <p-dropdown [options]="natureType" formControlName="nature" optionLabel="name"></p-dropdown>
+            </div>
+            <div>
+                <label for="amount">Montant: </label>
+                <input placeholder="Montant" type="number" [min]="0" pInputText formControlName="amount" />
+            </div>
+            <div>
+                <label for="purchasedOn">Date de la dépense: </label>
+                <p-calendar laceholder="Date de la dépense" formControlName="purchasedOn"
+                    [showIcon]="true"></p-calendar>
+            </div>
+            <div>
+                <label for="comment">Commentaire: </label>
+                <textarea placeholder="Commentaire" rows="5" cols="30" pInputTextarea
+                    formControlName="comment"></textarea>
+            </div>
+            <div *ngIf="!hideDistance">
+                <label for="distance">Distance: </label>
+                <input placeholder="Distance" pKeyFilter="int" type="number" pInputText [min]="0"
+                    formControlName="distance" />
+            </div>
+            <div *ngIf="hideDistance">
+                <label for="invites">Nombre d'invités: </label>
+                <input placeholder="Nombre d'invités" pKeyFilter="int" type="number" pInputText [min]="0"
+                    formControlName="invites" />
+            </div>
+            <p-button label="Save" icon="pi pi-check" [disabled]="!checkFormIsValid()" type="submit">
+            </p-button>
+        </form>
+    </ng-template>
+
+</p-sidebar>
+</div>
