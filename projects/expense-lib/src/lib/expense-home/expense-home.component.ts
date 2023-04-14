@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ExpenseApiService, Expense, SaveExpenseEventEmitterService } from '@lucca/expense/src/lib/common';
+import { ExpenseApiService, Expense, SaveExpenseEventEmitterService, Message, MessageEventEmitterService } from '@lucca/expense/src/lib/common';
+import { MessageService } from 'primeng/api';
 
 @Component({
     selector: 'lucca-expense-home',
@@ -15,6 +16,8 @@ export class ExpenseHomeComponent implements OnInit {
     public constructor(
         private readonly expenseApiService: ExpenseApiService,
         private readonly saveExpenseEventEmitterService: SaveExpenseEventEmitterService,
+        private readonly messageEventEmitterService: MessageEventEmitterService,
+        private readonly messageService: MessageService,
         private readonly router: Router
     ) {}
 
@@ -26,6 +29,12 @@ export class ExpenseHomeComponent implements OnInit {
             this.saveExpenseEventEmitterService.invokeOnSaveExpense.subscribe(
                 () => {
                     this.loadExpense();
+                }
+            );
+        this.messageEventEmitterService.subOnMessage =
+            this.messageEventEmitterService.invokeOnMessage.subscribe(
+                (message: Message) => {
+                    this.notifyMessage(message);
                 }
             );
     }
@@ -68,6 +77,20 @@ export class ExpenseHomeComponent implements OnInit {
             case 'trip':
                 return 'success';
         }
+    }
+
+    /**
+     * Affiche un message dans la page
+     * @param message 
+     */
+    public notifyMessage(message: Message): void {
+        this.messageService.add({
+            severity: message.severity,
+            life: message.life,
+            closable: message.closable,
+            summary: message.summary,
+            detail: message.detail
+        });
     }
 
 }

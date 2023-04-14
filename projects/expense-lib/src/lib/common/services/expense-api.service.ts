@@ -24,12 +24,30 @@ export class ExpenseApiService {
     }
 
     /**
-     * Récupère la liste des dépenses
-     * @returns la liste des dépenses
+     * Récupère une dépense par son id
+     * @returns une dépense
      */
-    public save(expense: Expense): Observable<Expense> {
+    public getExpenseById(expenseId: number): Observable<Expense> {
+        return this.http
+            .get<Expense>(this.url + "/" + expenseId.toString());
+    }
+
+    /**
+     * Crée une dépense
+     * @returns la dépense créé
+     */
+    public create(expense: Expense): Observable<Expense> {
         return this.http
             .post(this.url, expense);
+    }
+
+    /**
+     * Met à jour une dépense
+     * @returns la dépense mise à jour
+     */
+    public update(expense: Expense, expenseId: number): Observable<Expense> {
+        return this.http
+            .put(this.url + "/" + expenseId.toString(), expense);
     }
 
 }

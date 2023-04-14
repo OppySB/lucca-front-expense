@@ -1,6 +1,43 @@
 {
-    "EXPENSE": {
-        "MENU": "Menu",
-        "HOME": "Accueil"
+    "HOME": {
+        "TITLE": "Liste des dépenses",
+        "GRID": {
+            "ID": "Id",
+            "NATURE": "Nature",
+            "AMOUNT": "Montant",
+            "COMMENT": "Commentaire",
+            "DATE": "Date",
+            "DISTANCE": "Distance",
+            "INVITES": "Invités",
+            "ACTION": "Actions"
+        }
+    },
+    "EDIT": {
+        "BUTTON": {
+            "UPDATE": "Mise à jour de la dépense",
+            "CREATE_TITLE": "Créer",
+            "CREATE_TOOLTIP": "Créer une dépense",
+            "SAVE": "Enregistrer"
+        },
+        "TITLE_CREATE": "Création d'une dépense",
+        "TITLE_UPDATE": "Mise à jour d'une dépense",
+        "FORM": {
+            "NATURE": "Type de dépense",
+            "NATURE_RESTAURANT": "Restaurant",
+            "NATURE_TRIP": "Déplacement",
+            "AMOUNT": "Montant",
+            "DATE": "Date de la dépense",
+            "COMMENT": "Commentaire",
+            "DISTANCE": "Distance",
+            "INVITES": "Nombre d'invités"
+        }
+    },
+    "MESSAGE": {
+        "SAVE": "Sauvegarde",
+        "SAVE_TEXT": "La dépense a été sauvegardée",
+        "SAVE_ERROR": "Erreur de sauvegarde",
+        "SAVE_ERROR_TEXT": "Une erreur de sauvegarde est survenu.",
+        "EXPENSE_LOAD_ERROR": "Erreur de chargement",
+        "EXPENSE_LOAD_ERROR_TEXT": "la dépense n'existe pas."
     }
 }

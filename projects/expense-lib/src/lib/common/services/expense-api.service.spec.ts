@@ -53,12 +53,30 @@ describe('ExpenseApiService', () => {
         });
     });
 
-    it('save', () => {
+    it('getExpenseById', () => {
+        const expenseApiResponse = { id: 1 } as Expense;
+        spyOn(service.http, 'get').and.returnValue(of(expenseApiResponse));
+        service.getExpenseById(1).subscribe((data) => {
+            expect(data).toEqual(expenseApiResponse);
+        });
+        expect(service.http.get).toHaveBeenCalled();
+    });
+
+    it('create', () => {
         const expenseApiResponse = { id: 1 } as Expense;
         spyOn(service.http, 'post').and.returnValue(of(expenseApiResponse));
-        service.save(expenseApiResponse).subscribe((data) => {
+        service.create(expenseApiResponse).subscribe((data) => {
             expect(data).toEqual(expenseApiResponse);
         });
         expect(service.http.post).toHaveBeenCalled();
+    });
+
+    it('update', () => {
+        const expenseApiResponse = { id: 1 } as Expense;
+        spyOn(service.http, 'put').and.returnValue(of(expenseApiResponse));
+        service.update(expenseApiResponse, 1).subscribe((data) => {
+            expect(data).toEqual(expenseApiResponse);
+        });
+        expect(service.http.put).toHaveBeenCalled();
     });
 });

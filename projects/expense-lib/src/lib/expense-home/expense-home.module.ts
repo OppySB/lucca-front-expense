@@ -16,12 +16,11 @@ import { DropdownModule } from 'primeng/dropdown';
 import { MessagesModule } from 'primeng/messages';
 import { KeyFilterModule } from 'primeng/keyfilter';
 import { ExpenseCreateComponent } from './expense-create/expense-create.component';
-import { ExpenseUpdateComponent } from './expense-update/expense-update.component';
+import { TranslateModule } from '@ngx-translate/core';
 @NgModule({
     declarations: [
         ExpenseHomeComponent,
-        ExpenseCreateComponent,
-        ExpenseUpdateComponent
+        ExpenseCreateComponent
     ],
     imports: [
         CommonModule,
@@ -40,7 +39,8 @@ import { ExpenseUpdateComponent } from './expense-update/expense-update.componen
         DropdownModule,
         MessagesModule,
         InputTextModule,
-        KeyFilterModule
+        KeyFilterModule,
+        TranslateModule
     ],
     providers: [],
     exports: [ExpenseHomeComponent]
