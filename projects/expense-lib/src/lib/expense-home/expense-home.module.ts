@@ -17,6 +17,7 @@ import { MessagesModule } from 'primeng/messages';
 import { KeyFilterModule } from 'primeng/keyfilter';
 import { ExpenseCreateComponent } from './expense-create/expense-create.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { InputNumberModule } from 'primeng/inputnumber';
 @NgModule({
     declarations: [
         ExpenseHomeComponent,
@@ -40,7 +41,8 @@ import { TranslateModule } from '@ngx-translate/core';
         MessagesModule,
         InputTextModule,
         KeyFilterModule,
-        TranslateModule
+        TranslateModule,
+        InputNumberModule
     ],
     providers: [],
     exports: [ExpenseHomeComponent]

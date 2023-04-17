@@ -1,11 +1,10 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Expense, ExpenseApiService } from '@lucca/expense';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 
 describe('ExpenseApiService', () => {
     let service: ExpenseApiService;
-
     beforeEach(async () => {
         await TestBed.configureTestingModule({
             imports: [HttpClientTestingModule],

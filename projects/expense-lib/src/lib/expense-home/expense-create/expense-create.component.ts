@@ -4,8 +4,8 @@ import {
     ExpenseApiService,
     Expense,
     SaveExpenseEventEmitterService,
-    MessageEventEmitterService,
-    Message
+    ExpenseMessageService,
+    NatureTypeService
 } from '@lucca/expense/src/lib/common';
 import { TranslateService } from '@ngx-translate/core';
 import moment from 'moment';
@@ -27,25 +27,13 @@ export class ExpenseCreateComponent implements OnInit {
     public constructor(
         private readonly expenseApiService: ExpenseApiService,
         private readonly translateService: TranslateService,
+        private readonly natureTypeService: NatureTypeService,
         private readonly saveExpenseEventEmitterService: SaveExpenseEventEmitterService,
-        private readonly messageEventEmitterService: MessageEventEmitterService
+        private readonly expenseMessageService: ExpenseMessageService
     ) {}
 
     public ngOnInit(): void {
-        this.natureType = [
-            {
-                name: this.translateService.instant(
-                    'EXPENSE-LIB.EDIT.FORM.NATURE_RESTAURANT'
-                ),
-                value: 'restaurant'
-            },
-            {
-                name: this.translateService.instant(
-                    'EXPENSE-LIB.EDIT.FORM.NATURE_TRIP'
-                ),
-                value: 'trip'
-            }
-        ];
+        this.natureType = this.natureTypeService.getNatureType();
         this.createEditForm();
     }
 
@@ -67,9 +55,19 @@ export class ExpenseCreateComponent implements OnInit {
         this.createEditForm();
         this.createPanelVisible = true;
         this.loadIfUpdate();
-        this.expenseForm.valueChanges.subscribe(() => {
-            this.displayDistanceInvites();
-        });
+    }
+
+    /**
+     * gère le changement de nature
+     * reset de la valeur dépendante de la nature (distance ou invites)
+     */
+    public switchNature(event): void {
+        if (event.value.value === 'restaurant') {
+            this.expenseForm.get('invites').setValue(0);
+        } else {
+            this.expenseForm.get('distance').setValue(1);
+        }
+        this.displayDistanceInvites();
     }
 
     /**
@@ -79,20 +77,22 @@ export class ExpenseCreateComponent implements OnInit {
         this.expenseForm = new FormGroup({
             nature: new FormControl(
                 {
-                    name: this.translateService.instant(
+                    label: this.translateService.instant(
                         'EXPENSE-LIB.EDIT.FORM.NATURE_RESTAURANT'
                     ),
                     value: 'restaurant'
                 },
                 [Validators.required]
             ),
-            amount: new FormControl(0, [Validators.required]),
+            amount: new FormControl(0.01, [
+                Validators.required,
+                Validators.min(0.01)
+            ]),
             comment: new FormControl('', [Validators.required]),
             purchasedOn: new FormControl('', [Validators.required]),
-            distance: new FormControl(0, []),
+            distance: new FormControl(1, [Validators.min(1)]),
             invites: new FormControl(0, [])
         });
-        console.log('form created');
     }
 
     /**
@@ -133,29 +133,13 @@ export class ExpenseCreateComponent implements OnInit {
                 // On emet l'event d'enregistrement pour rechargement de la grille
                 this.saveExpenseEventEmitterService.OnSaveExpense();
                 // Affichage du message de succès
-                this.messageEventEmitterService.OnMessage(
-                    {
-                        severity: 'success',
-                        summary: this.translateService.instant('EXPENSE-LIB.MESSAGE.SAVE'),
-                        life: 5000,
-                        closable: true,
-                        detail: this.translateService.instant('EXPENSE-LIB.MESSAGE.SAVE_TEXT')
-                    } as Message
-                );
-                
+                this.expenseMessageService.sendSuccessMessage();
+                // Fermeture du panel
                 this.createPanelVisible = false;
             },
             error: (error) => {
                 console.error('There was an error!', error);
-                this.messageEventEmitterService.OnMessage(
-                    {
-                        severity: 'error',
-                        life: 5000,
-                        closable: true,
-                        summary: this.translateService.instant('EXPENSE-LIB.MESSAGE.SAVE_ERROR'),
-                        detail: this.translateService.instant('EXPENSE-LIB.MESSAGE.SAVE_ERROR_TEXT')
-                    } as Message
-                );
+                this.expenseMessageService.sendErrorMessage();
             }
         });
     }
@@ -171,29 +155,13 @@ export class ExpenseCreateComponent implements OnInit {
                     // On emet l'event d'enregistrement pour rechargement de la grille
                     this.saveExpenseEventEmitterService.OnSaveExpense();
                     // Affichage du message de succès
-                    this.messageEventEmitterService.OnMessage(
-                        {
-                            severity: 'success',
-                            summary: this.translateService.instant('EXPENSE-LIB.MESSAGE.SAVE'),
-                            life: 5000,
-                            closable: true,
-                            detail: this.translateService.instant('EXPENSE-LIB.MESSAGE.SAVE_TEXT')
-                        } as Message
-                    );
-                    
+                    this.expenseMessageService.sendSuccessMessage();
+                    // Fermeture du panel
                     this.createPanelVisible = false;
                 },
                 error: (error) => {
                     console.error('There was an error!', error);
-                    this.messageEventEmitterService.OnMessage(
-                        {
-                            severity: 'error',
-                            life: 5000,
-                            closable: true,
-                            summary: this.translateService.instant('EXPENSE-LIB.MESSAGE.SAVE_ERROR'),
-                            detail: this.translateService.instant('EXPENSE-LIB.MESSAGE.SAVE_ERROR_TEXT')
-                        } as Message
-                    );
+                    this.expenseMessageService.sendErrorMessage();
                 }
             });
     }
@@ -208,7 +176,8 @@ export class ExpenseCreateComponent implements OnInit {
             nature: this.expenseForm.get('nature').value.value,
             comment: this.expenseForm.get('comment').value,
             purchasedOn: moment(
-                this.expenseForm.get('purchasedOn').value
+                this.expenseForm.get('purchasedOn').value,
+                'DD/MM/YYYY'
             ).format('YYYY-MM-DD')
         };
 
@@ -255,15 +224,7 @@ export class ExpenseCreateComponent implements OnInit {
                     this.displayDistanceInvites();
                 },
                 error: () => {
-                    this.messageEventEmitterService.OnMessage(
-                        {
-                            severity: 'error',
-                            life: 5000,
-                            closable: true,
-                            summary: this.translateService.instant('EXPENSE-LIB.MESSAGE.EXPENSE_LOAD_ERROR'),
-                            detail: this.translateService.instant('EXPENSE-LIB.MESSAGE.EXPENSE_LOAD_ERROR_TEXT')
-                        } as Message
-                    );
+                    this.expenseMessageService.sendLoadErrorMessage();
                 }
             });
         }

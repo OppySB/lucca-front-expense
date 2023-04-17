@@ -78,7 +78,33 @@ describe('ExpenseCreateComponent', () => {
         component.expenseForm
             .get('nature')
             .setValue({ name: 'Déplacement', value: 'trip' });
-        expect(component.hideDistance).toEqual(false);
+    });
+
+    describe('switchNature ', () => {
+        it('switchNature restaurant', () => {
+            component.expenseForm.get('invites').setValue(2);
+            spyOn(component, 'displayDistanceInvites');
+            component.switchNature( {
+                value: {
+                    name: 'EXPENSE-LIB.EDIT.FORM.NATURE_RESTAURANT',
+                    value: 'restaurant'
+                }
+            });
+            expect(component.expenseForm.get('invites').value).toEqual(0);
+            expect(component.displayDistanceInvites).toHaveBeenCalled();
+        });
+        it('switchNature trip', () => {
+            component.expenseForm.get('distance').setValue(2);
+            spyOn(component, 'displayDistanceInvites');
+            component.switchNature( {
+                value: {
+                    name: 'EXPENSE-LIB.EDIT.FORM.NATURE_TRIP',
+                    value: 'trip'
+                }
+            });
+            expect(component.expenseForm.get('distance').value).toEqual(1);
+            expect(component.displayDistanceInvites).toHaveBeenCalled();
+        });
     });
 
     it('createEditForm', () => {
@@ -86,12 +112,12 @@ describe('ExpenseCreateComponent', () => {
         expect(component.expenseForm).toBeDefined();
         expect(component.expenseForm.get('nature')).toBeInstanceOf(FormControl);
         expect(component.expenseForm.get('nature').value).toEqual({
-            name: 'EXPENSE-LIB.EDIT.FORM.NATURE_RESTAURANT',
+            label: 'EXPENSE-LIB.EDIT.FORM.NATURE_RESTAURANT',
             value: 'restaurant',
         });
 
         expect(component.expenseForm.get('amount')).toBeInstanceOf(FormControl);
-        expect(component.expenseForm.get('amount').value).toEqual(0);
+        expect(component.expenseForm.get('amount').value).toEqual(0.01);
 
         expect(component.expenseForm.get('comment')).toBeInstanceOf(
             FormControl
@@ -111,7 +137,7 @@ describe('ExpenseCreateComponent', () => {
         expect(component.expenseForm.get('distance')).toBeInstanceOf(
             FormControl
         );
-        expect(component.expenseForm.get('distance').value).toEqual(0);
+        expect(component.expenseForm.get('distance').value).toEqual(1);
     });
 
     describe('checkFormIsValid', () => {
@@ -240,7 +266,7 @@ describe('ExpenseCreateComponent', () => {
             component.expenseForm.get('comment').setValue('test');
             component.expenseForm.get('invites').setValue(1);
             component.expenseForm.get('distance').setValue(1);
-            component.expenseForm.get('purchasedOn').setValue("2023-03-20");
+            component.expenseForm.get('purchasedOn').setValue("20/03/2023");
 
             const expense = component.getExpenseFromEditForm();
 
@@ -260,7 +286,7 @@ describe('ExpenseCreateComponent', () => {
             component.expenseForm.get('amount').setValue(11);
             component.expenseForm.get('comment').setValue('test');
             component.expenseForm.get('invites').setValue(1);
-            component.expenseForm.get('purchasedOn').setValue("2023-03-20");
+            component.expenseForm.get('purchasedOn').setValue("20/03/2023");
 
             component.expenseForm.get('distance').setValue(1);
 

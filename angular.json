@@ -34,7 +34,9 @@
                         "karmaConfig": "projects/expense-lib/karma.conf.js",
                         "codeCoverage": true,
                         "scripts": [],
-                        "codeCoverageExclude": []
+                        "codeCoverageExclude": [
+                            "projects/expense-app/*"
+                        ]
                     }
                 },
                 "lint": {

@@ -1,16 +1,18 @@
 <div *ngIf="isUpdate else elseBlock">
-    <p-button icon="pi pi-pencil" type="button" class="mr-2" pTooltip="{{'EXPENSE-LIB.EDIT.BUTTON.UPDATE' | translate}}" tooltipPosition="top"
-        styleClass="p-button-secondary" (click)="onOpen()">
+    <p-button icon="pi pi-pencil" type="button" class="mr-2" pTooltip="{{'EXPENSE-LIB.EDIT.BUTTON.UPDATE' | translate}}"
+        tooltipPosition="top" styleClass="p-button-secondary " (click)="onOpen()">
     </p-button>
 </div>
 <ng-template #elseBlock>
-    <p-button label="{{'EXPENSE-LIB.EDIT.BUTTON.CREATE_TITLE' | translate }}" icon="pi pi-plus" type="button" styleClass="p-button-primary"
-        (click)="onOpen()" pTooltip="{{'EXPENSE-LIB.EDIT.BUTTON.CREATE_TOOLTIP' | translate }}" tooltipPosition="top" tooltipPosition="top">
-    </p-button></ng-template>
+    <p-button label="{{'EXPENSE-LIB.EDIT.BUTTON.CREATE_TITLE' | translate }}" icon="pi pi-plus" type="button"
+        styleClass="p-button-primary flex  justify-content-end" (click)="onOpen()"
+        pTooltip="{{'EXPENSE-LIB.EDIT.BUTTON.CREATE_TOOLTIP' | translate }}" tooltipPosition="top"
+        tooltipPosition="top">
+    </p-button>
+
+</ng-template>
 
 <div class="card flex justify-content-center">
-
-
 
     <p-sidebar styleClass="p-sidebar-md" [(visible)]="createPanelVisible" position="right">
 
@@ -22,124 +24,66 @@
         </ng-template>
         <ng-template pTemplate="content">
 
-
-            <div class="grid">
-                <div class="col-2">
-                    <label for="nature" class="">{{'EXPENSE-LIB.EDIT.FORM.NATURE' | translate }}</label>
-                    <p-dropdown [options]="natureType" formControlName="nature"
-                    (change)="change()"
-                    class=""
-                     optionLabel="name"></p-dropdown> 
-                </div>
-                <div class="col">1</div>
-                <div class="col">1</div>
-                <div class="col">1</div>
-                <div class="col">1</div>
-                <div class="col">1</div>
-                <div class="col">1</div>
-                <div class="col">1</div>
-                <div class="col">1</div>
-            </div>
-            
-            <div class="grid">
-                <div class="col-2">2</div>
-                <div class="col-6">6</div>
-                <div class="col-4">4</div>
-            </div>
-            
+            <form [formGroup]="expenseForm" (ngSubmit)="save()">
 
 
+                <div class="card">
 
+                    <div class="formgrid grid-2">
+                        <div class="field col">
+                            <label for="nature" class=" font-bold w-4">
+                                {{'EXPENSE-LIB.EDIT.FORM.NATURE' | translate }}</label>
 
-            <form [formGroup]="expenseForm" class="flex" (ngSubmit)="save()">
-            <div class="card">
-                
-                <div class="field">
-                    <label for="nature" class="font-bold flex-1 p-4 w-6">{{'EXPENSE-LIB.EDIT.FORM.NATURE' | translate }}</label>
-                    <p-dropdown [options]="natureType" formControlName="nature"
-                    (change)="change()"
-                    class="flex-1 p-4"
-                     optionLabel="name"></p-dropdown>
-                </div>
-                <div class="field">
-                    <label class="font-bold flex-1 p-4 w6"
-                    for="amount">{{'EXPENSE-LIB.EDIT.FORM.AMOUNT' | translate }} 
-                </label>
-                    <input placeholder="{{'EXPENSE-LIB.EDIT.FORM.AMOUNT' | translate }}" 
-                    type="number" [min]="0" pInputText formControlName="amount" />
-                </div>
-                <div class="field">
-                    <label class="font-bold flex-1 p-4 w6"
-                    for="purchasedOn">{{'EXPENSE-LIB.EDIT.FORM.DATE' | translate }} </label>
-                    <p-calendar
-                        dateFormat="dd/mm/yy"
-                        placeholder="{{'EXPENSE-LIB.EDIT.FORM.DATE' | translate }}" 
-                        formControlName="purchasedOn"
-                        [showIcon]="true"></p-calendar>
+                            <p-dropdown class="w-8" [options]="natureType" formControlName="nature"
+                                optionLabel="label" (onChange)="switchNature($event)"></p-dropdown>
+                        </div>
+
+                        <div class="field col">
+                            <label class="font-bold w-4" for="amount">
+                                {{'EXPENSE-LIB.EDIT.FORM.AMOUNT' | translate }} </label>
+                            <p-inputNumber suffix=" €" 
+                            class="w-8" 
+                            placeholder="{{'EXPENSE-LIB.EDIT.FORM.AMOUNT' | translate }}"
+                             mode="decimal" [minFractionDigits]="2" 
+                             formControlName="amount" min="0.01"
+                            ></p-inputNumber>
+                        </div>
+                        <div class="field col">
+                            <label class="font-bold w-4" for="purchasedOn">{{'EXPENSE-LIB.EDIT.FORM.DATE' | translate }}
+                            </label>
+                            <p-calendar class="w-8" dateFormat="dd/mm/yy"
+                                placeholder="{{'EXPENSE-LIB.EDIT.FORM.DATE' | translate }}"
+                                formControlName="purchasedOn" [showIcon]="true"></p-calendar>
+                        </div>
+                        <div class="field col">
+                            <label class="font-bold w-4" for="comment">{{'EXPENSE-LIB.EDIT.FORM.COMMENT' | translate }}
+                            </label>
+                            <textarea class="w-8" placeholder="{{'EXPENSE-LIB.EDIT.FORM.COMMENT' | translate }}"
+                                rows="5" cols="30" pInputTextarea formControlName="comment"></textarea>
+                        </div>
+                        
+                        <div *ngIf="!hideDistance" class="field col">
+                            <label class="font-bold w-4" for="distance">
+                                {{'EXPENSE-LIB.EDIT.FORM.DISTANCE' | translate }} </label>
+                                <p-inputNumber class="w-8" 
+                            placeholder="{{'EXPENSE-LIB.EDIT.FORM.DISTANCE' | translate }}"
+                            min="1"  formControlName="distance" />
+                        </div>
+                        <div *ngIf="hideDistance" class="field col">
+                            <label class="font-bold w-4" for="invites">{{'EXPENSE-LIB.EDIT.FORM.INVITES' | translate }}
+                            </label>
+                            <p-inputNumber class="w-8" 
+                            placeholder="{{'EXPENSE-LIB.EDIT.FORM.INVITES' | translate }}"
+                                min="0" formControlName="invites" />
+                        </div>
                     </div>
-                    <div class="field">
-                        <label class="font-bold flex-1 p-4 w-6"
-                        for="comment">{{'EXPENSE-LIB.EDIT.FORM.COMMENT' | translate }} </label>
-                        <textarea placeholder="{{'EXPENSE-LIB.EDIT.FORM.COMMENT' | translate }}" rows="5" cols="30" pInputTextarea
-                            formControlName="comment"></textarea>
-                    </div>
-                    <div *ngIf="!hideDistance" class="field">
-                        <label class="font-bold flex-1 p-4 w-6"
-                        for="distance">{{'EXPENSE-LIB.EDIT.FORM.DISTANCE' | translate }} </label>
-                        <input placeholder="{{'EXPENSE-LIB.EDIT.FORM.DISTANCE' | translate }}" pKeyFilter="int" type="number" pInputText [min]="0"
-                            formControlName="distance" />
-                    </div>
-                    <div *ngIf="hideDistance" class="field">
-                        <label class="font-bold flex-1 p-4 w-6"
-                        for="invites">{{'EXPENSE-LIB.EDIT.FORM.INVITES' | translate }} </label>
-                        <input placeholder="{{'EXPENSE-LIB.EDIT.FORM.INVITES' | translate }}" pKeyFilter="int" type="number" pInputText [min]="0"
-                            formControlName="invites" />
-                    </div>
-                    <p-button label="{{'EXPENSE-LIB.EDIT.BUTTON.SAVE' | translate }}" icon="pi pi-check" [disabled]="!checkFormIsValid()" type="submit">
+                    <p-button class="flex justify-content-end" label="{{'EXPENSE-LIB.EDIT.BUTTON.SAVE' | translate }}"
+                        icon="pi pi-check" [disabled]="!checkFormIsValid()" type="submit">
                     </p-button>
-            </div>
-            
-            
-</form>
+                </div>
 
-            <!-- <form [formGroup]="expenseForm" class="flex" (ngSubmit)="save()">
-                <div class="inline-flex p-4">
-                    <label for="nature" class="font-bold flex-1 p-4">{{'EXPENSE-LIB.EDIT.FORM.NATURE' | translate }}</label>
-                    <p-dropdown [options]="natureType" formControlName="nature"
-                    (change)="change()"
-                    class="flex-1 p-4"
-                     optionLabel="name"></p-dropdown>
-                </div>
-                <div>
-                    <label for="amount">{{'EXPENSE-LIB.EDIT.FORM.AMOUNT' | translate }} </label>
-                    <input placeholder="{{'EXPENSE-LIB.EDIT.FORM.AMOUNT' | translate }}" type="number" [min]="0" pInputText formControlName="amount" />
-                </div>
-                <div>
-                    <label for="purchasedOn">{{'EXPENSE-LIB.EDIT.FORM.DATE' | translate }} </label>
-                    <p-calendar
-                        dateFormat="dd/mm/yy"
-                        placeholder="{{'EXPENSE-LIB.EDIT.FORM.DATE' | translate }}" 
-                        formControlName="purchasedOn"
-                        [showIcon]="true"></p-calendar>
-                </div>
-                <div>
-                    <label for="comment">{{'EXPENSE-LIB.EDIT.FORM.COMMENT' | translate }} </label>
-                    <textarea placeholder="{{'EXPENSE-LIB.EDIT.FORM.COMMENT' | translate }}" rows="5" cols="30" pInputTextarea
-                        formControlName="comment"></textarea>
-                </div>
-                <div *ngIf="!hideDistance">
-                    <label for="distance">{{'EXPENSE-LIB.EDIT.FORM.DISTANCE' | translate }} </label>
-                    <input placeholder="{{'EXPENSE-LIB.EDIT.FORM.DISTANCE' | translate }}" pKeyFilter="int" type="number" pInputText [min]="0"
-                        formControlName="distance" />
-                </div>
-                <div *ngIf="hideDistance">
-                    <label for="invites">{{'EXPENSE-LIB.EDIT.FORM.INVITES' | translate }} </label>
-                    <input placeholder="{{'EXPENSE-LIB.EDIT.FORM.INVITES' | translate }}" pKeyFilter="int" type="number" pInputText [min]="0"
-                        formControlName="invites" />
-                </div>
-                <p-button label="{{'EXPENSE-LIB.EDIT.BUTTON.SAVE' | translate }}" icon="pi pi-check" [disabled]="!checkFormIsValid()" type="submit">
-                </p-button>
-            </form> -->
+            </form>
+
         </ng-template>
 
     </p-sidebar>

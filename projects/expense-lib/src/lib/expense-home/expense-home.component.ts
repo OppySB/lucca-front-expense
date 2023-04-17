@@ -1,6 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ExpenseApiService, Expense, SaveExpenseEventEmitterService, Message, MessageEventEmitterService } from '@lucca/expense/src/lib/common';
+import {
+    ExpenseApiService,
+    NatureTypeService,
+    Expense,
+    SaveExpenseEventEmitterService,
+    Message,
+    MessageEventEmitterService
+} from '@lucca/expense/src/lib/common';
+import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
 
 @Component({
@@ -12,9 +20,11 @@ export class ExpenseHomeComponent implements OnInit {
 
     public expenses: Expense[] = [];
     public sidebarVisible1: boolean;
-
+    public natureType = [];
     public constructor(
+        private readonly translateService: TranslateService,
         private readonly expenseApiService: ExpenseApiService,
+        private readonly natureTypeService: NatureTypeService,
         private readonly saveExpenseEventEmitterService: SaveExpenseEventEmitterService,
         private readonly messageEventEmitterService: MessageEventEmitterService,
         private readonly messageService: MessageService,
@@ -22,6 +32,7 @@ export class ExpenseHomeComponent implements OnInit {
     ) {}
 
     public ngOnInit(): void {
+        this.natureType = this.natureTypeService.getNatureType();
         // Chargement des dépenses de la grille
         this.loadExpense();
 
@@ -81,7 +92,7 @@ export class ExpenseHomeComponent implements OnInit {
 
     /**
      * Affiche un message dans la page
-     * @param message 
+     * @param message
      */
     public notifyMessage(message: Message): void {
         this.messageService.add({

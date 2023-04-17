@@ -1,12 +1,36 @@
-<h1>{{"EXPENSE-LIB.HOME.TITLE" | translate }}</h1>
+<div class="card">
+    <div class="flex justify-content-start" header>
+        <div class="logo mt-3 flex justify-content-center"></div>
+        <h2 class="flex ml-4 mt-4 justify-content-center">{{"EXPENSE-LIB.HOME.TITLE" | translate }}</h2>
+    </div>
+    <div class="flex justify-content-end flex-wrap card-container green-container">
+        <lucca-expense-create class="flex align-items-center justify-content-center p-4"></lucca-expense-create>
+    </div>
+</div>
+
+
 <p-messages></p-messages>
-<lucca-expense-create></lucca-expense-create>
-<p-table [value]="expenses" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+<p-table #dt [value]="expenses" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
     [tableStyle]="{ 'min-width': '50rem' }" currentPageReportTemplate="{first}-{last}/{totalRecords}">
     <ng-template pTemplate="header">
         <tr>
             <th>{{"EXPENSE-LIB.HOME.GRID.ID" | translate }}</th>
-            <th>{{"EXPENSE-LIB.HOME.GRID.NATURE" | translate }}</th>
+            <th class="flex justify-content-end ">
+                 <span class ="mr-2 flex align-items-center justify-content-center  ">
+                    {{"EXPENSE-LIB.HOME.GRID.NATURE" | translate }}
+                 </span>
+                <p-columnFilter field="nature" matchMode="equals" [showMenu]="false">
+					<ng-template pTemplate="filter" let-value let-filter="filterCallback">
+						<p-dropdown [ngModel]="value" [options]="natureType" (onChange)="filter($event.value)"
+							placeholder="{{'EXPENSE-LIB.HOME.GRID.NATURE' | translate }}" [showClear]="true">
+							<ng-template let-option pTemplate="item">
+								<span>{{option.label}}</span>
+							</ng-template>
+						</p-dropdown>
+					</ng-template>
+				</p-columnFilter>
+           
+            </th>
             <th>{{"EXPENSE-LIB.HOME.GRID.AMOUNT" | translate }}</th>
             <th>{{"EXPENSE-LIB.HOME.GRID.COMMENT" | translate }}</th>
             <th>{{"EXPENSE-LIB.HOME.GRID.DATE" | translate }}</th>
@@ -14,6 +38,7 @@
             <th>{{"EXPENSE-LIB.HOME.GRID.INVITES" | translate }}</th>
             <th>{{"EXPENSE-LIB.HOME.GRID.ACTION" | translate }}</th>
         </tr>
+      
     </ng-template>
     <ng-template pTemplate="body" let-expense>
         <tr>
@@ -24,7 +49,7 @@
             </td>
             <td>{{ expense.amount }}</td>
             <td>{{ expense.comment }}</td>
-            <td>{{ expense.purchasedOn |  date  : 'dd/MM/yy'  }}</td>
+            <td>{{ expense.purchasedOn | date : 'dd/MM/yy' }}</td>
             <td>
                 <p-tag *ngIf="expense.distance" [value]="expense.distance"
                     [severity]="getNatureTagColor(expense.nature)">
@@ -40,6 +65,3 @@
         </tr>
     </ng-template>
 </p-table>
-
-
-

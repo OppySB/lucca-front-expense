@@ -8,8 +8,7 @@ import { Expense } from '../models/expense.model';
 })
 export class ExpenseApiService {
 
-    // TODO déplacer l'uri en conf
-    private readonly url = 'http://localhost:3000/expenses';
+    private readonly url = '/expenses';
 
     public constructor(public readonly http: HttpClient) {}
 
@@ -28,8 +27,7 @@ export class ExpenseApiService {
      * @returns une dépense
      */
     public getExpenseById(expenseId: number): Observable<Expense> {
-        return this.http
-            .get<Expense>(this.url + "/" + expenseId.toString());
+        return this.http.get<Expense>(this.url + '/' + expenseId.toString());
     }
 
     /**
@@ -37,8 +35,7 @@ export class ExpenseApiService {
      * @returns la dépense créé
      */
     public create(expense: Expense): Observable<Expense> {
-        return this.http
-            .post(this.url, expense);
+        return this.http.post(this.url, expense);
     }
 
     /**
@@ -46,8 +43,7 @@ export class ExpenseApiService {
      * @returns la dépense mise à jour
      */
     public update(expense: Expense, expenseId: number): Observable<Expense> {
-        return this.http
-            .put(this.url + "/" + expenseId.toString(), expense);
+        return this.http.put(this.url + '/' + expenseId.toString(), expense);
     }
 
 }

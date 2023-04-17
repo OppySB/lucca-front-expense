@@ -1,27 +1,57 @@
 # LuccaFrontExpense
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.1.
+Ce repo est mon implémentation de l'[Exercice](https://github.com/LuccaTest/RecruitmentTest.Angular.Sebastien.Bienvenu) qui m'a été soumis, à savoir une application de saisie des dépenses.
 
-## Development server
+## Installation du projet
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+*Pour info, le projet est constitué d'une librairie pouvant être exportée dans un autre projet et d'une partie application "app" qui utilise cette librairie.*
 
-## Code scaffolding
+Après avoir cloner le projet, il faut tout d'abord installer les dépendances
+```batch
+npm install
+```
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Ensuite il faut donc build l'application (app + lib) :
+```batch
+npm run build:all
+```
 
-## Build
+Pour effectuer le build de la lib (cas de changement de traduction par exemple) :
+```batch
+npm run build:lib
+```
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Pour lancer l'application : 
+```batch
+npm start
+```
+L'application va utiliser le fichier proxy.conf.json à la racine du projet pour savoir comment joindre le backend.
 
-## Running unit tests
+### Tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Pour lancer les tests de la lib
+```batch
+npm run test:lib
+```
+Cela devrait effectuer l'analyse de couverture de code
+![code coverage](/projects/expense-app/src/assets/img/codecoverage.png)
 
-## Running end-to-end tests
+### Fonctionnement de l'application
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+Voici un lien qui explique coment utiliser l'application :
+[Guide d'utilisation de Lucca Expense](https://scribehow.com/shared/Guide_for_Creating_a_New_Expenditure_Record___KXRQUDiTPqNOigZxqP3kA)
 
-## Further help
+![Guide d'utilisation de Lucca Expense](/projects/expense-app/src/assets/img/guide.png)
+Cette documentation a été créé avec l'outil Scribe.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+### Choix de conception et pistes d'amélioration
+
+le projet est développé dans une librairie et utilisé par l'application. J'ai utilisé *Primeng* pour la grille de la liste des dépenses( en effet la grille primeng est très rapide au chargement).
+D'habitude plus habitué aux composants *Material*, j'ai utilisé les autres composants de primeng pour essayer. J'utilise d'habitude tailwind comme framework css, mais j'ai vu que primeng avait le même genre d'outil. J'ai donc essayer *PrimeFlex* sur le projet pour rajouter un peu de style.
+
+Le projet ne possède qu'une seule page (On reste sur la même page pour l'édition d'une dépense, le formulaire s'affiche dans un panel sur la droite de l'écran). Je trouve c'est plus simple et plus ergonomique de rester sur la même page pour le besoin.
+
+J'ai choisi de charger le formulaire d'édition avec des données valides plutôt que de charger un formulaire vide avec des champs en erreur. Arriver sur un formulaire en erreur n'est pas très engageant.
+Je n'ai mis qu'un filtre dans la grille (sur la nature du déplacement) pour ne pas surcharger l'affichage.
+
+J'aurais voulu rajouter des tests fonctionnels automatisés avec *Cypress* ou *nightwatch*.
