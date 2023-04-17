@@ -12,8 +12,7 @@ import moment from 'moment';
 
 @Component({
     selector: 'lucca-expense-create',
-    templateUrl: './expense-create.component.html',
-    styleUrls: ['./expense-create.component.scss']
+    templateUrl: './expense-create.component.html'
 })
 export class ExpenseCreateComponent implements OnInit {
 
